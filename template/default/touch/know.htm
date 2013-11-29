@@ -1,0 +1,76 @@
+{template 'header', $TP}
+<div class="head_bar">
+<table>
+<tr>
+<td class="head_bar_td_w5">&nbsp;</td>
+<td class="head_bar_td_w50"><div class="head_back"><a href="{$back_link}"><span>返回</span></a></div></td>
+<td><div class="head_name"><a href="{$head_link}"><span>{$head_name}</span></a></div></td>
+<td class="head_bar_td_w55 t_r"><a href="index.php?moduleid={$moduleid}&amp;action=category"><img src="image/sort.png" width="40" height="40" alt="行业分类"/></a></td>
+</tr>
+</table>
+</div>
+<div class="head_bar_fix"></div>
+<div class="main">
+{if $itemid}
+	{if $action == 'list'}
+		<div class="title"><a href="index.php?moduleid={$moduleid}&amp;itemid={$itemid}"><strong>{$title}</strong></a></div>
+		<div class="info"><small>{$items}</small>个回答 {if $could_answer}&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?moduleid={$moduleid}&amp;itemid={$itemid}&amp;action=answer">[我来回答]</a>{/if}</div>
+		{loop $lists $v}
+		<div class="content">
+		{nl2br($v[content])}<br/>
+		<small>{timetodate($v[addtime], 5)}</small><br/>
+		回答:{if $v[hidden]}匿名{else}{if $v[username]}<a href="index.php?moduleid=4&amp;username={$v[username]}">{$v[username]}</a>{else}{hide_ip($v[ip])}{/if}{/if}
+		</div>
+		{/loop}
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+	{elseif $action == 'answer'}
+	<div class="title"><a href="index.php?moduleid={$moduleid}&amp;itemid={$itemid}"><strong>回答[{$title}]</strong></a></div>
+	<div class="fm">
+	<form action="index.php" method="post">
+	<input type="hidden" name="moduleid" value="{$moduleid}"/>
+	<input type="hidden" name="action" value="{$action}"/>
+	<input type="hidden" name="itemid" value="{$itemid}"/>
+	<input type="hidden" name="forward" value="{$forward}"/>
+	答案:
+	<input type="text" name="content" size="15"/>
+	<input type="submit" name="submit" value="提交"/>
+	</form>
+	</div>
+	{else}
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">日期:<small>{$editdate}</small>&nbsp;&nbsp;点击:<small>{$hits}</small></div>
+	<div class="content">
+	状态:{$PROCESS[$process]}<br/>
+	提问:{if $hidden}匿名{else}<a href="index.php?moduleid=4&amp;username={$username}">{$username}</a>{/if}<br/>
+	{$content}
+	</div>
+	<div class="box_head">最佳答案{if $expert}<span style="color:red;">[专家]</span>{/if}</div>
+	<div class="content">
+	{if $user_status == 3}
+		{if $best}
+		{nl2br($best[content])}<br/>
+		回答：{if $best[hidden]}匿名{else}{if $best[username]}<a href="index.php?moduleid=4&amp;username={$best[username]}">{$best[username]}</a>{else}{hide_ip($best[ip])}{/if}{/if}<br/>
+		<small>{timetodate($best[addtime], 5)}</small>
+		{else}
+		暂无最佳答案
+		{/if}
+	{else}
+	{template 'chip-content', $TP}
+	{/if}
+	<br/><br/>
+	<center><a href="index.php?moduleid={$moduleid}&amp;itemid={$itemid}&amp;action=list">[全部回答({$answer})]</a>
+	{if $could_answer}<a href="index.php?moduleid={$moduleid}&amp;itemid={$itemid}&amp;action=answer">[我来回答]</a>{/if}</center>
+	<br/><br/>
+	</div>
+	{/if}
+{else}
+	<ul class="listtxt">
+	{loop $lists $v}
+	<li><span class="f_r px12 f_gray">&nbsp;&nbsp;{$PROCESS[$v[process]]}</span><a href="index.php?moduleid={$moduleid}&amp;itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+	{/loop}
+	</ul>
+{/if}
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{template 'chip-search', $TP}
+</div>
+{template 'footer', $TP}

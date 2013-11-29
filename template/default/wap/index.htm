@@ -1,0 +1,47 @@
+{template 'header', $TP}
+<div><img src="{if $DT[logo]}{$DT[logo]}{else}{DT_SKIN}image/logo.gif{/if}" alt="{$head_title}"/></div>
+<div style="background:#CEE1F6;padding:4px;font-weight:bold;line-height:150%;">
+{loop $WAP_MODULE $i $m}
+<a href="index.php?moduleid={$m[moduleid]}">{$m[name]}</a>
+{/loop}
+</div>
+<div class="fm" style="padding:10px;">
+<form action="index.php" method="get">
+<select name="moduleid" class="fm_opt">
+{loop $WAP_MODULE $i $m}
+<option value="{$m[moduleid]}"{if $m[moduleid]==5} selected{/if}>{$m[name]}</option>
+{/loop}
+</select>
+<input type="text" name="kw" value="{$kw}" size="15" class="fm_inp"/>
+<input type="submit" value="搜索" class="fm_sbm"/>
+</form>
+</div>
+{if isset($MODULE[21])}
+<div class="head"><a href="?moduleid=21"><strong>{$MODULE[21][name]}</strong></a></div>
+<div class="main">
+<!--{php $tags=tag("moduleid=21&condition=status=3 and level>0&pagesize=5&length=$len&order=addtime desc&template=null");}-->
+{loop $tags $t}
+&middot;<a href="?moduleid=21&itemid={$t[itemid]}">{$t[title]}</a><br/>
+{/loop}
+</div>
+{/if}
+{if isset($MODULE[5])}
+<div class="head"><a href="?moduleid=5"><strong>{$MODULE[5][name]}</strong></a></div>
+<div class="main">
+<!--{php $tags=tag("moduleid=5&condition=status=3 and level>0&pagesize=5&length=$len&order=edittime desc&template=null");}-->
+{loop $tags $t}
+&middot;<a href="?moduleid=5&itemid={$t[itemid]}">{$t[title]}</a><br/>
+{/loop}
+</div>
+{/if}
+{if isset($MODULE[6])}
+<div class="head"><a href="?moduleid=6"><strong>{$MODULE[6][name]}</strong></a></div>
+<div class="main">
+<!--{php $tags=tag("moduleid=6&condition=status=3 and level>0&pagesize=5&length=$len&order=edittime desc&template=null");}-->
+{loop $tags $t}
+&middot;<a href="?moduleid=6&itemid={$t[itemid]}">{$t[title]}</a><br/>
+{/loop}
+</div>
+{/if}
+<div>
+{template 'footer', $TP}

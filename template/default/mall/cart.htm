@@ -1,0 +1,149 @@
+{template 'header'}
+<script type="text/javascript">
+var errimg = '{DT_SKIN}image/nopic50.gif';
+function check() {
+	if(Dd('itemid').value == 0 || Dd('itemid').value == '') {
+		alert('请输入商品ID');
+		Dd('itemid').focus();
+		return false;
+	}
+	return true;
+}
+</script>
+<div class="m">
+<div class="left_box">
+	<div class="pos">
+		<div class="f_r">
+		<form action="cart.php" method="post" onsubmit="return check();">
+		<input name="action" type="hidden" value="add"/>
+		输入商品ID&nbsp;<input name="itemid" type="text" size="10" id="itemid"/>&nbsp;
+		<input type="submit" value="加入购物车"/>&nbsp;
+		<input type="button" value="清空购物车" onclick="if(confirm('确定要清空购物车吗？')) Go('?action=clear');"/>
+		</form>
+		</div>
+		您的位置: <a href="{DT_PATH}">首页</a> 
+		&raquo; <a href="{$MOD[linkurl]}">{$MOD[name]}</a>
+		&raquo; <a href="{$MOD[linkurl]}cart.php">购物车</a>
+	</div>
+
+	{if $tags}
+	<form method="post" action="{$MOD[linkurl]}buy.php" onsubmit="return check();">
+	<input type="hidden" name="from" value="cart"/>
+	<table cellpadding="10" cellspacing="0" width="100%">
+	<tr align="center" bgcolor="#F6F6F6">
+	<td width="20"><input type="checkbox" onclick="checkall(this.form);"/></td>
+	<td width="60">图片</td>
+	<td>商品</td>
+	<td>库存</td>
+	<td>价格</td>
+	<td>数量</td>
+	<td width="100">小计</td>
+	<td width="40">操作</td>
+	</tr>
+	{loop $tags $i $t}
+	<tr align="center"{if $i%2==1} bgcolor="#F6F6F6"{/if} id="tr_{$t[key]}">
+	<td><input type="checkbox" name="itemid[]" value="{$t[key]}" checked onclick="calculate()" id="check_{$t[key]}"/><input type="hidden" name="keyid[]" value="{$t[key]}"/></td>
+	<td><a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="50" alt="{$t[alt]}"  onerror="this.src=errimg;"/></a></td>
+	<td align="left" style="line-height:24px;color:#666666;"><a href="{$t[linkurl]}" target="_blank" class="b" title="{$t[alt]}">{$t[title]}</a><br/>
+	{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级" align="absmiddle"/> {/if}<a href="{userurl($t[username])}" target="_blank">{$t[company]}</a>
+	{if $DT[im_web]}{im_web($t[username].'&mid='.$moduleid.'&itemid='.$t[itemid])}&nbsp;{/if}
+	{if $t[qq] && $DT[im_qq]}{im_qq($t[qq])}&nbsp;{/if}
+	{if $t[ali] && $DT[im_ali]}{im_ali($t[ali])}&nbsp;{/if}
+	{if $t[msn] && $DT[im_msn]}{im_msn($t[msn])}&nbsp;{/if}
+	{if $t[skype] && $DT[im_skype]}{im_skype($t[skype])}</a>&nbsp;{/if}
+	<br/>品牌:{if $t[brand]}{$t[brand]}{else}未填写{/if}&nbsp;{if $t[m1]}{$t[n1]}:{$t[m1]}&nbsp;{/if}{if $t[m2]}{$t[n2]}:{$t[m2]}&nbsp;{/if}{if $t[m3]}{$t[n3]}:{$t[m3]}&nbsp;{/if}
+	</td>
+	<td>{$t[amount]}</td>
+	<td><span class="f_price" id="price_{$t[key]}">{$t[price]}</span></td>
+	<td><img src="{DT_SKIN}image/arrow_l.gif" width="16" height="8" alt="减少" class="c_p" onclick="alter('{$t[key]}', '-')"/><input type="text" name="amounts[{$t[key]}]" value="1" id="number_{$t[key]}" size="3" onblur="calculate();" class="cc_inp"/> <img src="{DT_SKIN}image/arrow_r.gif" width="16" height="8" alt="增加" class="c_p" onclick="alter('{$t[key]}', '+')"/><span class="dsn" id="amount_{$t[key]}">{$t[amount]}</span></td>
+	<td><span class="f_price" id="total_{$t[key]}">{$t[price]}</span></td>
+	<td class="c_p f_dblue" onclick="if(confirm('确定要移除此商品吗？')) move('{$t[key]}');">删除</td>
+	</tr>
+	{/loop}
+	</table>
+	<div class="b10">&nbsp;</div>
+		<div class="cart_foot">共选中 <span class="f_red f_b px16" id="total_good">{$total}</span> 种商品&nbsp;&nbsp;&nbsp;&nbsp;总价： <span class="f_red f_b px16" id="total_amount">{$price}</span> 元</div>
+	<div class="b10">&nbsp;</div>
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tr align="center">
+		<td height="60">&nbsp;</td>
+		<td width="280"><a href="{$MOD[linkurl]}"><img src="{DT_SKIN}image/btn_browse.gif" width="106" height="33" alt="继续购物"/></a></td>
+		<td width="280"><input type="image" src="{DT_SKIN}image/btn_buynext.gif"/></td>
+		</tr>
+		<tr align="center">
+		<td height="50">&nbsp;</td>
+		<td class="f_gray">您也可以返回到{$MOD[name]}首页，继续挑选商品</td>
+		<td class="f_gray">如果您已经完成挑选，请您点下一步进入提交订单</td>
+		</tr>
+		</table>
+	</form>
+	{else}
+		<div style="padding:80px;" class="t_c px14 f_b">您的 <span class="f_orange">购物车</span> 还是空的，赶快行动吧！马上去 <a href="{$MOD[linkurl]}" class="b">挑选商品</a></div>
+	{/if}
+
+</div>
+</div>
+<script type="text/javascript">
+function check() {
+	if(Dd('total_good').innerHTML == '0') {
+		alert('最少需要挑选1件商品');
+		window.scroll(0, 0);
+		return false;
+	}
+	{if !$_userid}
+	if(confirm('您还没有登录，是否现在登录？')) {
+		Go('{$MODULE[2][linkurl]}{$DT[file_login]}?forward={urlencode($DT_URL)}');
+	}
+    return false;
+	{/if}
+}
+function move(i) {
+	Dd('check_'+i).checked = false;
+	Dh('tr_'+i);
+	calculate();
+	makeRequest('action=clear&ajax=1&key='+i, '{$MOD[linkurl]}cart.php', '_move');
+}
+function _move() {
+	if(xmlHttp.readyState==4 && xmlHttp.status==200) {
+		var cart_num = substr_count(get_cookie('cart'), ',');
+		$('#destoon_cart').html(cart_num ? '<strong>'+cart_num+'</strong>' : '0');
+		if(xmlHttp.responseText == 1 && Dd('total_good').innerHTML == '0') Go('?empty='+Math.random());
+	}
+}
+function alter(i, t) {
+	if(t == '+') {
+		var maxa = parseFloat(Dd('amount_'+i).innerHTML);
+		if(maxa && Dd('number_'+i).value >= maxa) return;
+		Dd('number_'+i).value =  parseInt(Dd('number_'+i).value) + 1;
+	} else {
+		var mina = 1;
+		if(Dd('number_'+i).value <= mina) return;
+		Dd('number_'+i).value =  parseInt(Dd('number_'+i).value) - 1;
+	}
+	calculate();
+}
+function calculate() {
+	var itemids = [{loop $tags $i $t}{if $i},{/if}'{$t[key]}'{/loop}];
+	var _good = _amount = _total = 0;
+	for(var i = 0; i < itemids.length; i++) {
+		if(Dd('check_'+itemids[i]).checked) {
+			itemid = itemids[i];
+			var num, good, maxa, mina;
+			num = parseInt(Dd('number_'+itemid).value);
+			maxa = parseFloat(Dd('amount_'+itemid).innerHTML);
+			mina = 1;
+			if(num < mina) Dd('number_'+itemid).value = num = mina;
+			if(maxa && num > maxa) Dd('number_'+itemid).value = num = maxa;
+			if(isNaN(num) || num < 0) Dd('number_'+itemid).value = num = mina;
+			_good++;
+			_total = parseFloat(Dd('price_'+itemid).innerHTML)*parseFloat(Dd('number_'+itemid).value);
+			_amount += _total;
+			Dd('total_'+itemids[i]).innerHTML = _total.toFixed(2);
+		}
+	}
+	Dd('total_good').innerHTML = _good;
+	Dd('total_amount').innerHTML = _amount.toFixed(2);
+}
+{if $tags}calculate();{/if}
+</script>
+{template 'footer'}

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset={DT_CHARSET}"/>
+<title>{$DT[sitename]}</title>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}style.css"/>
+<script type="text/javascript" src="{DT_STATIC}lang/{DT_LANG}/lang.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/common.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/page.js"></script>
+</head>
+<body oncontextmenu="return false">
+<div id="poll__{$itemid}">
+{template $template_poll, 'chip'}
+</div>
+<script style="text/javascript">
+function Poll(i) {
+	makeRequest('action=ajax&itemid='+i, '?', '_Poll');
+}
+function _Poll() {
+	if(xmlHttp.readyState==4 && xmlHttp.status==200) {
+		if(xmlHttp.responseText == 'ok') {
+			alert('投票成功，感谢参与');
+			window.location.reload();
+		} else if(xmlHttp.responseText) {
+			alert(xmlHttp.responseText);
+		}
+	}
+}
+function H() {
+	var h = Dd('poll__{$itemid}').scrollHeight;
+	h = h + 30;
+	try{parent.Dd('poll__{$itemid}').style.height = h+'px';}
+	catch(e){}
+}
+H();
+</script>
+</body>
+</html>

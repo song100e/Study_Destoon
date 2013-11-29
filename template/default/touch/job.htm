@@ -1,0 +1,60 @@
+{template 'header', $TP}
+<div class="head_bar">
+<table>
+<tr>
+<td class="head_bar_td_w5">&nbsp;</td>
+<td class="head_bar_td_w50"><div class="head_back"><a href="{$back_link}"><span>返回</span></a></div></td>
+<td><div class="head_name"><a href="{$head_link}"><span>{$head_name}</span></a></div></td>
+<td class="head_bar_td_w55 t_r"><a href="index.php?moduleid={$moduleid}&amp;action=category"><img src="image/sort.png" width="40" height="40" alt="行业分类"/></a></td>
+</tr>
+</table>
+</div>
+<div class="head_bar_fix"></div>
+<div class="main">
+{if $itemid}
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">日期:<small>{$editdate}</small>&nbsp;&nbsp;点击:<small>{$hits}</small></div>
+	<div class="content">
+	{if !$username}<span style="color:red;">非会员信息</span><br/>{/if}
+	{if $vip}{VIP}:{$vip}级<br/>{/if}
+	行业:{$CATEGORY[$parentid][catname]}<br/>
+	职位:{$CATEGORY[$catid][catname]}<br/>
+	部门:{$department}<br/>
+	人数:{if $total}{$total}人{else}若干{/if}<br/>
+	地区:{area_pos($areaid, '')}<br/>
+	性质:{$TYPE[$type]}<br/>
+	性别:{$GENDER[$gender]}<br/>
+	婚姻:{$MARRIAGE[$marriage]}<br/>
+	学历:{$EDUCATION[$education]}<br/>
+	经验:{if $experience}{$experience}年以上{else}不限{/if}<br/>
+	年龄:{if $minage && $maxage}{$minage}-{$maxage}岁{elseif $minage}{$minage}岁以上{elseif $maxage}{$maxage}岁以内{else}不限年龄{/if}<br/>
+	待遇:{if $minsalary && $maxsalary}{$minsalary}-{$maxsalary}{$DT[money_unit]}/月{elseif $minsalary}{$minsalary}{$DT[money_unit]}/月以上{elseif $maxsalary}{$maxsalary}{$DT[money_unit]}/月以内{else}面议{/if}<br/>
+	{$content}
+	</div>
+	<div class="box_head"><strong>联系方式</strong></div>
+	<div class="contact">{template 'chip-contact', $TP}</div>
+{else}
+	{loop $lists $v}
+	<div class="listimg">
+	<ul>
+	<li><a href="index.php?moduleid={$moduleid}&amp;itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+	<li class="f_orange px12">
+		{if $v[minsalary] && $v[maxsalary]}
+			{$v[minsalary]}-{$v[maxsalary]}{$DT[money_unit]}/月
+		{elseif $v[minsalary]}
+			{$v[minsalary]}{$DT[money_unit]}/月以上
+		{elseif $v[maxsalary]}
+			{$v[maxsalary]}{$DT[money_unit]}/月以内
+		{else}
+			面议
+		{/if}	
+	</li>
+	<li{if $v[vip]} class="vip" title="{VIP}:{$v[vip]}"{/if}><a href="index.php?moduleid=4&amp;username={$v[username]}"><span>{$v[company]}</span></a></li>
+	</ul>
+	</div>
+	{/loop}
+{/if}
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{template 'chip-search', $TP}
+</div>
+{template 'footer', $TP}

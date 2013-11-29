@@ -1,0 +1,106 @@
+{template 'header', $TP}
+<div class="head_bar">
+<table>
+<tr>
+<td class="head_bar_td_w55">{if $_message}<em>{$_message}</em>{/if}<a href="index.php?moduleid=2{if $_message}&amp;action=message{/if}"><img src="image/user.png"/></a></td>
+<td><div class="head_name"><a href="{$head_link}"><span>{$head_name}</span></a></div></td>
+<td class="head_bar_td_w55 t_r"><a href="javascript:Dmenu();void(0);"><img src="image/sort.png"/></a></td>
+</tr>
+</table>
+</div>
+<div class="head_bar_fix"></div>
+
+<div class="menu" id="menu">
+<ul>
+{loop $WAP_MODULE $i $m}
+<li><a href="index.php?moduleid={$m[moduleid]}">{$m[name]}</a></li>
+{/loop}
+</ul>
+<div class="c_b"></div>
+</div>
+
+<div class="fm">
+<form action="index.php">
+<select name="moduleid" class="fm_opt">
+{loop $WAP_MODULE $i $m}
+<option value="{$m[moduleid]}"{if $m[moduleid]==5} selected{/if}>{$m[name]}</option>
+{/loop}
+</select>
+<input type="text" name="kw" value="{$kw}" size="15" data-widget="quickdelete" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" class="fm_inp"/>
+<input type="submit" value="搜索" class="fm_sbm"/>
+</form>
+</div>
+
+
+{if isset($MODULE[21])}
+<div class="box_head"><span class="f_r px12"><a href="?moduleid=21">更多&raquo;</a></span><a href="?moduleid=21"><strong>{$MODULE[21][name]}</strong></a></div>
+<!--{php $tags=tag("moduleid=21&condition=status=3 and level>0&pagesize=5&order=addtime desc&template=null");}-->
+<ul class="listtxt">
+{loop $tags $t}
+<li><span class="f_r px11 f_gray">&nbsp;&nbsp;{timetodate($t[addtime], 2)}</span><a href="index.php?moduleid=21&amp;itemid={$t[itemid]}"><strong>{$t[alt]}</strong></a></li>
+{/loop}
+</ul>
+{/if}
+
+{if isset($MODULE[5])}
+<div class="box_head"><span class="f_r px12"><a href="?moduleid=5">更多&raquo;</a></span><a href="?moduleid=5"><strong>{$MODULE[5][name]}</strong></a></div>
+<!--{php $tags=tag("moduleid=5&condition=status=3 and level>0 and thumb<>''&pagesize=5&order=addtime desc&template=null");}-->
+{loop $tags $t}
+<div class="listimg">
+<a href="index.php?moduleid=5&amp;itemid={$t[itemid]}"><img src="{if $t[thumb]}{$t[thumb]}{else}image/nopic.png{/if}" width="55" height="55" alt=""/></a>
+<ul>
+<li><a href="index.php?moduleid=5&amp;itemid={$t[itemid]}"><strong>{$t[alt]}</strong></a></li>
+<li><em>{timetodate($t[addtime], 5)}</em></li>
+<li{if $t[vip]} class="vip" title="{VIP}:{$t[vip]}"{/if}><a href="index.php?moduleid=4&amp;username={$t[username]}"><span>{$t[company]}</span></a></li>
+</ul>
+</div>
+{/loop}
+{/if}
+
+{if isset($MODULE[6])}
+<div class="box_head"><span class="f_r px12"><a href="?moduleid=6">更多&raquo;</a></span><a href="?moduleid=6"><strong>{$MODULE[6][name]}</strong></a></div>
+<!--{php $tags=tag("moduleid=6&condition=status=3 and level>0&pagesize=5&order=addtime desc&template=null");}-->
+<ul class="listtxt">
+{loop $tags $t}
+<li><span class="f_r px11 f_gray">&nbsp;&nbsp;{timetodate($t[addtime], 2)}</span><a href="index.php?moduleid=6&amp;itemid={$t[itemid]}"><strong>{$t[alt]}</strong></a></li>
+{/loop}
+</ul>
+{/if}
+
+{if isset($MODULE[16])}
+<div class="box_head"><span class="f_r px12"><a href="?moduleid=16">更多&raquo;</a></span><a href="?moduleid=16"><strong>{$MODULE[16][name]}</strong></a></div>
+<!--{php $tags=tag("moduleid=16&condition=status=3 and level>0 and thumb<>''&pagesize=3&order=addtime desc&template=null");}-->
+{loop $tags $t}
+<div class="listimg">
+<a href="index.php?moduleid=16&amp;itemid={$t[itemid]}"><img src="{if $t[thumb]}{$t[thumb]}{else}image/nopic.png{/if}" width="55" height="55" alt=""/></a>
+<ul>
+<li><a href="index.php?moduleid=16&amp;itemid={$t[itemid]}"><strong>{$t[alt]}</strong></a></li>
+<li class="price">￥{$t[price]}</li>
+<li{if $t[vip]} class="vip" title="{VIP}:{$t[vip]}"{/if}><a href="index.php?moduleid=4&amp;username={$t[username]}"><span>{$t[company]}</span></a></li>
+</ul>
+</div>
+{/loop}
+{/if}
+
+{if isset($MODULE[22])}
+<div class="box_head"><span class="f_r px12"><a href="?moduleid=22">更多&raquo;</a></span><a href="?moduleid=22"><strong>{$MODULE[22][name]}</strong></a></div>
+<!--{php $tags=tag("moduleid=22&condition=status=3 and level>0&pagesize=5&order=addtime desc&template=null");}-->
+<ul class="listtxt">
+{loop $tags $t}
+<li><span class="f_r px11 f_gray">&nbsp;&nbsp;{timetodate($t[addtime], 2)}</span><a href="index.php?moduleid=22&amp;itemid={$t[itemid]}"><strong>{$t[alt]}</strong></a></li>
+{/loop}
+</ul>
+{/if}
+<script type="text/javascript">
+Dd('menu').style.display='none';
+function Dmenu() {
+	if(Dd('menu').style.display=='none') {
+		window.scrollTo(0,0);
+		Dd('menu').style.display='';
+	} else {
+		Dd('menu').style.display='none';
+	}
+}
+</script>
+<div class="main">
+{template 'footer', $TP}

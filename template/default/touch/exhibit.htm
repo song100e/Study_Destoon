@@ -1,0 +1,56 @@
+{template 'header', $TP}
+<div class="head_bar">
+<table>
+<tr>
+<td class="head_bar_td_w5">&nbsp;</td>
+<td class="head_bar_td_w50"><div class="head_back"><a href="{$back_link}"><span>返回</span></a></div></td>
+<td><div class="head_name"><a href="{$head_link}"><span>{$head_name}</span></a></div></td>
+<td class="head_bar_td_w55 t_r"><a href="index.php?moduleid={$moduleid}&amp;action=category"><img src="image/sort.png" width="40" height="40" alt="行业分类"/></a></td>
+</tr>
+</table>
+</div>
+<div class="head_bar_fix"></div>
+<div class="main">
+{if $itemid}
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">发布时间:<small>{$editdate}</small>&nbsp;&nbsp;点击:<small>{$hits}</small></div>
+	<div class="content">
+	日期:{$fromdate}~{$todate}<br/>
+	城市:{$city}<br/>
+	地址:{$address}<br/>
+	展馆:{$hallname}<br/>
+	主办:{$sponsor}<br/>
+	{if $user_status == 3}
+	</div>
+	<div class="box_head"><strong>联系方式</strong></div>
+	<div class="content">
+	姓名:{$truename}<br/>
+	{if $addr}地址:{$addr}<br/>{/if}
+	{if $mobile}手机:{$mobile}<br/>{/if}
+	{if $telephone}电话:{$telephone}<br/>{/if}
+	{if $fax}传真:{$fax}<br/>{/if}
+	{if $email}邮件:{$email}<br/>{/if}
+	{if $msn}MSN:{$msn}<br/>{/if}
+	{if $qq}QQ:{$qq}<br/>{/if}
+	</div>
+	<div class="box_head"><strong>详细介绍</strong></div>
+	<div class="content">{$content}</div>
+	{else}
+	{template 'chip-content', $TP}
+	{/if}
+	</div>
+{else}
+	{loop $lists $v}
+	<div class="listimg">
+	<ul>
+	<li><a href="index.php?moduleid={$moduleid}&amp;itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+	<li><em>{if $v[city]}[{$v[city]}] {/if}{timetodate($v[fromtime], 3)} - {timetodate($v[totime], 3)}</em></li>
+	<li><span>主办：{$v[sponsor]}</span></li>
+	</ul>
+	</div>
+	{/loop}
+{/if}
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{template 'chip-search', $TP}
+</div>
+{template 'footer', $TP}
